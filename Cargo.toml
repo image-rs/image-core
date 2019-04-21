@@ -1,0 +1,12 @@
+[package]
+name = "image-core"
+description = "Core types and traits to encode and decode images"
+version = "0.1.0"
+authors = ["The image-rs Developers"]
+edition = "2018"
+license = "MIT"
+readme = "README.md"
+documentation = "https://docs.rs/image-core"
+categories = ["multimedia::images"]
+
+[dependencies]
