@@ -6,6 +6,8 @@
 
 mod colortype;
 mod decoder;
+mod error;
 
 pub use colortype::*;
 pub use decoder::*;
+pub use error::*;

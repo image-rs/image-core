@@ -1,22 +1,19 @@
 use crate::ColorType;
-use std::error;
-use std::io::{self, Read};
+use crate::ImageResult;
+use std::io::Read;
 
 
 /// Represents the progress of an image operation.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Progress {
-    current: u64,
-    total: u64,
+    pub current: u64,
+    pub total: u64,
 }
 
 /// Trait to decode an image file into dimensions, color type, and image data.
 pub trait ImageDecoder<'a>: Sized {
     /// The type of reader produced by `into_reader`.
     type Reader: Read + 'a;
-
-    /// Type of errors
-    type Error: error::Error + From<io::Error>;
 
     /// Returns a tuple containing the width and height of the image.
     fn dimensions(&self) -> (u64, u64);
@@ -27,7 +24,7 @@ pub trait ImageDecoder<'a>: Sized {
     /// Returns a reader that can be used to obtain the bytes of the image. For the best
     /// performance, always try to read at least `scanline_bytes` from the reader at a time. Reading
     /// fewer bytes will cause the reader to perform internal buffering.
-    fn into_reader(self) -> Result<Self::Reader, Self::Error>;
+    fn into_reader(self) -> ImageResult<Self::Reader>;
 
     /// Returns the total number of bytes in the image.
     fn total_bytes(&self) -> u64 {
@@ -42,7 +39,7 @@ pub trait ImageDecoder<'a>: Sized {
     }
 
     /// Returns all the bytes in the image.
-    fn read_image(self, buf: &mut [u8]) -> Result<(), Self::Error> {
+    fn read_image(self, buf: &mut [u8]) -> ImageResult<()> {
         self.read_image_with_progress(buf, |_| {})
     }
 
@@ -52,7 +49,7 @@ pub trait ImageDecoder<'a>: Sized {
         self,
         buf: &mut [u8],
         progress_callback: F,
-    ) -> Result<(), Self::Error> {
+    ) -> ImageResult<()> {
         let total_bytes = self.total_bytes();
         assert_eq!(buf.len() as u64, total_bytes);
 
@@ -96,7 +93,7 @@ pub trait ImageDecoderExt<'a>: ImageDecoder<'a> + Sized {
         width: u64,
         height: u64,
         buf: &mut [u8],
-    ) -> Result<(), Self::Error> {
+    ) -> ImageResult<()> {
         self.read_rect_with_progress(x, y, width, height, buf, |_|{})
     }
 
@@ -109,5 +106,5 @@ pub trait ImageDecoderExt<'a>: ImageDecoder<'a> + Sized {
         height: u64,
         buf: &mut [u8],
         progress_callback: F,
-    ) -> Result<(), Self::Error>;
+    ) -> ImageResult<()>;
 }
