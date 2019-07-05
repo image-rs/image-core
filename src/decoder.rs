@@ -6,7 +6,9 @@ use std::io::Read;
 /// Represents the progress of an image operation.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Progress {
+    /// Amount of progress that has been made so far.
     pub current: u64,
+    /// Total amount that must be reached before the operation is complete.
     pub total: u64,
 }
 
