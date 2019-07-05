@@ -87,7 +87,7 @@ impl Error for ImageError {
     }
 
     // TODO: use `Error::source` when minimal rust version is updated
-    fn cause(&self) -> Option<&Error> {
+    fn cause(&self) -> Option<&dyn Error> {
         match *self {
             ImageError::IoError(ref e) => Some(e),
             _ => None,
@@ -98,6 +98,18 @@ impl Error for ImageError {
 impl From<io::Error> for ImageError {
     fn from(err: io::Error) -> ImageError {
         ImageError::IoError(err)
+    }
+}
+
+impl From<ImageError> for io::Error {
+    fn from(err: ImageError) -> io::Error {
+        match err {
+            ImageError::IoError(err) => err,
+            err => io::Error::new(
+                io::ErrorKind::Other,
+                err.description()
+            )
+        }
     }
 }
 
