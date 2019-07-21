@@ -2,7 +2,6 @@ use crate::ColorType;
 use crate::ImageResult;
 use std::io::Read;
 
-
 /// Represents the progress of an image operation.
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub struct Progress {
@@ -96,7 +95,7 @@ pub trait ImageDecoderExt<'a>: ImageDecoder<'a> + Sized {
         height: u64,
         buf: &mut [u8],
     ) -> ImageResult<()> {
-        self.read_rect_with_progress(x, y, width, height, buf, |_|{})
+        self.read_rect_with_progress(x, y, width, height, buf, |_| {})
     }
 
     /// Read a rectangular section of the image, periodically reporting progress.

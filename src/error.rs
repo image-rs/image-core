@@ -1,7 +1,6 @@
-
+use crate::colortype::ColorType;
 use std::error::Error;
 use std::{fmt, io};
-use crate::colortype::ColorType;
 
 /// An enumeration of Image errors
 #[derive(Debug)]
@@ -44,21 +43,13 @@ impl fmt::Display for ImageError {
                 "The Image's dimensions are either too \
                  small or too large"
             ),
-            ImageError::UnsupportedFormat(ref f) => write!(
-                fmt,
-                "The format `{}` is not supported",
-                f
-            ),
-            ImageError::UnsupportedColor(ref c) => write!(
-                fmt,
-                "The color type {:?} is not supported",
-                c
-            ),
-            ImageError::UnsupportedFeature(ref fe) => write!(
-                fmt,
-                "Unsupported feature '{}'",
-                fe,
-            ),
+            ImageError::UnsupportedFormat(ref f) => {
+                write!(fmt, "The format `{}` is not supported", f)
+            }
+            ImageError::UnsupportedColor(ref c) => {
+                write!(fmt, "The color type {:?} is not supported", c)
+            }
+            ImageError::UnsupportedFeature(ref fe) => write!(fmt, "Unsupported feature '{}'", fe,),
             ImageError::NotEnoughData => write!(
                 fmt,
                 "Not enough data was provided to the \
@@ -105,10 +96,7 @@ impl From<ImageError> for io::Error {
     fn from(err: ImageError) -> io::Error {
         match err {
             ImageError::IoError(err) => err,
-            err => io::Error::new(
-                io::ErrorKind::Other,
-                err.description()
-            )
+            err => io::Error::new(io::ErrorKind::Other, err.description()),
         }
     }
 }
