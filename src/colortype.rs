@@ -1,4 +1,3 @@
-
 /// An enumeration over supported color types and bit depths
 #[derive(Copy, PartialEq, Eq, Debug, Clone, Hash)]
 pub enum ColorType {
