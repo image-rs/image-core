@@ -1,4 +1,4 @@
-use crate::colortype::ColorType;
+use crate::colortype::ExtendedColorType;
 use std::error::Error;
 use std::{fmt, io};
 
@@ -6,19 +6,16 @@ use std::{fmt, io};
 #[derive(Debug)]
 pub enum ImageError {
     /// The Image is not formatted properly
-    InvalidData(String),
+    FormatError(String),
 
     /// The Image's dimensions are either too small or too large
     DimensionError,
 
-    /// This image format is not supported
-    UnsupportedFormat(String),
+    /// The Decoder does not support this image format
+    UnsupportedError(String),
 
-    /// This color type is not supported
-    UnsupportedColor(ColorType),
-
-    /// Unsupported feature in a image format
-    UnsupportedFeature(String),
+    /// The Decoder does not support this color type
+    UnsupportedColor(ExtendedColorType),
 
     /// Not enough data was provided to the Decoder
     /// to decode the image
@@ -37,19 +34,24 @@ pub enum ImageError {
 impl fmt::Display for ImageError {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> {
         match *self {
-            ImageError::InvalidData(ref e) => write!(fmt, "Invalid data: {}", e),
+            ImageError::FormatError(ref e) => write!(fmt, "Format error: {}", e),
             ImageError::DimensionError => write!(
                 fmt,
                 "The Image's dimensions are either too \
                  small or too large"
             ),
-            ImageError::UnsupportedFormat(ref f) => {
-                write!(fmt, "The format `{}` is not supported", f)
-            }
-            ImageError::UnsupportedColor(ref c) => {
-                write!(fmt, "The color type {:?} is not supported", c)
-            }
-            ImageError::UnsupportedFeature(ref fe) => write!(fmt, "Unsupported feature '{}'", fe,),
+            ImageError::UnsupportedError(ref f) => write!(
+                fmt,
+                "The Decoder does not support the \
+                 image format `{}`",
+                f
+            ),
+            ImageError::UnsupportedColor(ref c) => write!(
+                fmt,
+                "The decoder does not support \
+                 the color type `{:?}`",
+                c
+            ),
             ImageError::NotEnoughData => write!(
                 fmt,
                 "Not enough data was provided to the \
@@ -65,11 +67,10 @@ impl fmt::Display for ImageError {
 impl Error for ImageError {
     fn description(&self) -> &str {
         match *self {
-            ImageError::InvalidData(..) => "Invalid datar",
+            ImageError::FormatError(..) => "Format error",
             ImageError::DimensionError => "Dimension error",
-            ImageError::UnsupportedFormat(..) => "Unsupported format",
+            ImageError::UnsupportedError(..) => "Unsupported error",
             ImageError::UnsupportedColor(..) => "Unsupported color",
-            ImageError::UnsupportedFeature(..) => "Unsupported feature",
             ImageError::NotEnoughData => "Not enough data",
             ImageError::IoError(..) => "IO error",
             ImageError::ImageEnd => "Image end",
@@ -77,7 +78,6 @@ impl Error for ImageError {
         }
     }
 
-    // TODO: use `Error::source` when minimal rust version is updated
     fn cause(&self) -> Option<&dyn Error> {
         match *self {
             ImageError::IoError(ref e) => Some(e),
@@ -89,15 +89,6 @@ impl Error for ImageError {
 impl From<io::Error> for ImageError {
     fn from(err: io::Error) -> ImageError {
         ImageError::IoError(err)
-    }
-}
-
-impl From<ImageError> for io::Error {
-    fn from(err: ImageError) -> io::Error {
-        match err {
-            ImageError::IoError(err) => err,
-            err => io::Error::new(io::ErrorKind::Other, err.description()),
-        }
     }
 }
 
