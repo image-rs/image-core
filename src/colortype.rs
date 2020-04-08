@@ -1,3 +1,5 @@
+use crate::NonExhaustiveMarker;
+
 /// An enumeration over supported color types and bit depths
 #[derive(Copy, PartialEq, Eq, Debug, Clone, Hash)]
 pub enum ColorType {
@@ -25,7 +27,7 @@ pub enum ColorType {
     Bgra8,
 
     #[doc(hidden)]
-    __Nonexhaustive,
+    __Nonexhaustive(NonExhaustiveMarker),
 }
 
 impl ColorType {
@@ -38,7 +40,7 @@ impl ColorType {
             ColorType::Rgba8 | ColorType::Bgra8 | ColorType::La16 => 4,
             ColorType::Rgb16 => 6,
             ColorType::Rgba16 => 8,
-            ColorType::__Nonexhaustive => unreachable!(),
+            ColorType::__Nonexhaustive(marker) => match marker._private {},
         }
     }
 
@@ -95,7 +97,7 @@ pub enum ExtendedColorType {
     Unknown(u8),
 
     #[doc(hidden)]
-    __Nonexhaustive,
+    __Nonexhaustive(NonExhaustiveMarker),
 }
 
 impl ExtendedColorType {
@@ -128,7 +130,7 @@ impl ExtendedColorType {
             ExtendedColorType::Rgba8 |
             ExtendedColorType::Rgba16 |
             ExtendedColorType::Bgra8 => 4,
-            ExtendedColorType::__Nonexhaustive => unreachable!(),
+            ExtendedColorType::__Nonexhaustive(marker) => match marker._private {},
         }
     }
 }
@@ -145,7 +147,7 @@ impl From<ColorType> for ExtendedColorType {
             ColorType::Rgba16 => ExtendedColorType::Rgba16,
             ColorType::Bgr8 => ExtendedColorType::Bgr8,
             ColorType::Bgra8 => ExtendedColorType::Bgra8,
-            ColorType::__Nonexhaustive => unreachable!(),
+            ColorType::__Nonexhaustive(marker) => match marker._private {},
         }
     }
 }
