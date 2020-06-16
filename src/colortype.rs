@@ -107,29 +107,29 @@ impl ExtendedColorType {
     /// an opaque datum by the library.
     pub fn channel_count(self) -> u8 {
         match self {
-            ExtendedColorType::L1 |
-            ExtendedColorType::L2 |
-            ExtendedColorType::L4 |
-            ExtendedColorType::L8 |
-            ExtendedColorType::L16 |
-            ExtendedColorType::Unknown(_) => 1,
-            ExtendedColorType::La1 |
-            ExtendedColorType::La2 |
-            ExtendedColorType::La4 |
-            ExtendedColorType::La8 |
-            ExtendedColorType::La16 => 2,
-            ExtendedColorType::Rgb1 |
-            ExtendedColorType::Rgb2 |
-            ExtendedColorType::Rgb4 |
-            ExtendedColorType::Rgb8 |
-            ExtendedColorType::Rgb16 |
-            ExtendedColorType::Bgr8 => 3,
-            ExtendedColorType::Rgba1 |
-            ExtendedColorType::Rgba2 |
-            ExtendedColorType::Rgba4 |
-            ExtendedColorType::Rgba8 |
-            ExtendedColorType::Rgba16 |
-            ExtendedColorType::Bgra8 => 4,
+            ExtendedColorType::L1
+            | ExtendedColorType::L2
+            | ExtendedColorType::L4
+            | ExtendedColorType::L8
+            | ExtendedColorType::L16
+            | ExtendedColorType::Unknown(_) => 1,
+            ExtendedColorType::La1
+            | ExtendedColorType::La2
+            | ExtendedColorType::La4
+            | ExtendedColorType::La8
+            | ExtendedColorType::La16 => 2,
+            ExtendedColorType::Rgb1
+            | ExtendedColorType::Rgb2
+            | ExtendedColorType::Rgb4
+            | ExtendedColorType::Rgb8
+            | ExtendedColorType::Rgb16
+            | ExtendedColorType::Bgr8 => 3,
+            ExtendedColorType::Rgba1
+            | ExtendedColorType::Rgba2
+            | ExtendedColorType::Rgba4
+            | ExtendedColorType::Rgba8
+            | ExtendedColorType::Rgba16
+            | ExtendedColorType::Bgra8 => 4,
             ExtendedColorType::__Nonexhaustive(marker) => match marker._private {},
         }
     }
