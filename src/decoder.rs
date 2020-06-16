@@ -1,5 +1,5 @@
-use crate::{ColorType, ExtendedColorType};
 use crate::ImageResult;
+use crate::{ColorType, ExtendedColorType};
 use std::convert::TryFrom;
 use std::io::Read;
 
@@ -64,7 +64,9 @@ pub trait ImageDecoder<'a>: Sized {
     /// into.
     fn total_bytes(&self) -> u64 {
         let dimensions = self.dimensions();
-        u64::from(dimensions.0) * u64::from(dimensions.1) * u64::from(self.color_type().bytes_per_pixel())
+        u64::from(dimensions.0)
+            * u64::from(dimensions.1)
+            * u64::from(self.color_type().bytes_per_pixel())
     }
 
     /// Returns the minimum number of bytes that can be efficiently read from this decoder. This may
@@ -143,7 +145,7 @@ pub trait ImageDecoderExt<'a>: ImageDecoder<'a> + Sized {
         height: u32,
         buf: &mut [u8],
     ) -> ImageResult<()> {
-        self.read_rect_with_progress(x, y, width, height, buf, |_|{})
+        self.read_rect_with_progress(x, y, width, height, buf, |_| {})
     }
 
     /// Read a rectangular section of the image, periodically reporting progress.

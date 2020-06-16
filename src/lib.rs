@@ -31,4 +31,4 @@ pub struct NonExhaustiveMarker {
 }
 
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq, PartialOrd, Ord)]
-pub(crate) enum Empty { }
+pub(crate) enum Empty {}
