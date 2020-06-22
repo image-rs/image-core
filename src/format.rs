@@ -1,7 +1,6 @@
-use crate::NonExhaustiveMarker;
-
 /// An enumeration of supported image formats.
 /// Not all formats support both encoding and decoding.
+#[non_exhaustive]
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum ImageFormat {
     /// An Image in PNG Format
@@ -36,7 +35,4 @@ pub enum ImageFormat {
 
     /// An Image in Radiance HDR Format
     Hdr,
-
-    #[doc(hidden)]
-    __NonExhaustive(NonExhaustiveMarker),
 }

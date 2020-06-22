@@ -18,7 +18,6 @@ use std::{fmt, io};
 
 use crate::ExtendedColorType;
 use crate::ImageFormat;
-use crate::NonExhaustiveMarker;
 
 /// The generic error type for image operations.
 ///
@@ -77,6 +76,7 @@ pub struct UnsupportedError {
 }
 
 /// Details what feature is not supported.
+#[non_exhaustive]
 #[derive(Clone, Debug, Hash, PartialEq)]
 pub enum UnsupportedErrorKind {
     /// The required color type can not be handled.
@@ -86,8 +86,6 @@ pub enum UnsupportedErrorKind {
     /// Some feature specified by string.
     /// This is discouraged and is likely to get deprecated (but not removed).
     GenericFeature(String),
-    #[doc(hidden)]
-    __NonExhaustive(NonExhaustiveMarker),
 }
 
 /// An error was encountered while encoding an image.
@@ -115,6 +113,7 @@ pub struct ParameterError {
 }
 
 /// Details how a parameter is malformed.
+#[non_exhaustive]
 #[derive(Clone, Debug, Hash, PartialEq)]
 pub enum ParameterErrorKind {
     /// The dimensions passed are wrong.
@@ -126,9 +125,6 @@ pub enum ParameterErrorKind {
     Generic(String),
     /// The end of the image has been reached.
     NoMoreData,
-    #[doc(hidden)]
-    /// Do not use this, not part of stability guarantees.
-    __NonExhaustive(NonExhaustiveMarker),
 }
 
 /// An error was encountered while decoding an image.
@@ -162,18 +158,17 @@ pub struct LimitError {
 /// detailed information or to incorporate other resources types.
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 #[allow(missing_copy_implementations)] // Might be non-Copy in the future.
+#[non_exhaustive]
 pub enum LimitErrorKind {
     /// The resulting image exceed dimension limits in either direction.
     DimensionError,
     /// The operation would have performed an allocation larger than allowed.
     InsufficientMemory,
-    #[doc(hidden)]
-    /// Do not use this, not part of stability guarantees.
-    __NonExhaustive(NonExhaustiveMarker),
 }
 
 /// A best effort representation for image formats.
 #[derive(Clone, Debug, Hash, PartialEq)]
+#[non_exhaustive]
 pub enum ImageFormatHint {
     /// The format is known exactly.
     Exact(ImageFormat),
@@ -186,9 +181,6 @@ pub enum ImageFormatHint {
 
     /// The format is not known or could not be determined.
     Unknown,
-
-    #[doc(hidden)]
-    __NonExhaustive(NonExhaustiveMarker),
 }
 
 impl UnsupportedError {

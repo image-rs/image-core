@@ -1,6 +1,5 @@
-use crate::NonExhaustiveMarker;
-
 /// An enumeration over supported color types and bit depths
+#[non_exhaustive]
 #[derive(Copy, PartialEq, Eq, Debug, Clone, Hash)]
 pub enum ColorType {
     /// Pixel is 8-bit luminance
@@ -25,9 +24,6 @@ pub enum ColorType {
     Bgr8,
     /// Pixel is 8-bit BGR with an alpha channel
     Bgra8,
-
-    #[doc(hidden)]
-    __Nonexhaustive(NonExhaustiveMarker),
 }
 
 impl ColorType {
@@ -66,6 +62,7 @@ impl ColorType {
 /// Another purpose is to advise users of a rough estimate of the accuracy and effort of the
 /// decoding from and encoding to such an image format.
 #[allow(missing_docs)]
+#[non_exhaustive]
 #[derive(Copy, PartialEq, Eq, Debug, Clone, Hash)]
 pub enum ExtendedColorType {
     L1,
@@ -95,9 +92,6 @@ pub enum ExtendedColorType {
     /// which are associated with an external palette. In that case, the pixel value is an index
     /// into the palette.
     Unknown(u8),
-
-    #[doc(hidden)]
-    __Nonexhaustive(NonExhaustiveMarker),
 }
 
 impl ExtendedColorType {
